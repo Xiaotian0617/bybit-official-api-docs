@@ -1,7 +1,7 @@
 ### websocket推送
 ```
 // websocket连接地址
-wss://stream-testnet.bybit.com/realtime"
+wss://stream-testnet.bybit.com/realtime
 ```
 
 ### 连接限制
@@ -26,7 +26,7 @@ var expires = time.now()+1;
 var signature = hex(HMAC_SHA256(secret, 'GET/realtime' + expires));
 
 // 参数列表
-var param = "api_key={api_key}&expires={expires}&signature={}";
+var param = "api_key={api_key}&expires={expires}&signature={signature}";
 
 // 建立连接
 new WebSocket("wsurl?param");
@@ -55,7 +55,7 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
     "request":{     // 请求订阅的指令
         "op":"subscribe",
         "args":[
-            "kline.BTCUSD.1ma"
+            "kline.BTCUSD.1m"
         ]
     }
 }
@@ -72,7 +72,8 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
 
 ### 个人类topic
 * [position](#position) `// 仓位变化`
-* [execution](#execution) `// 委托单成交`
+* [execution](#execution) `// 委托单成交信息`
+* [order](#order) `//委托单的更新`
 
 <hr>
 
@@ -100,7 +101,8 @@ ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
 
 <hr>
 
-### <span id="kline">订阅k线</span>
+### <span id="kline">k线</span>
+
 * 目前支持的interval
 * 1m 3m 5m 15m 30m
 * 1h 2h 3h 4h 6h
@@ -130,7 +132,7 @@ ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m"]}');
 
 <hr>
 
-### <span id="trade">订阅实时交易信息</span>
+### <span id="trade">实时交易信息</span>
 
 ```js
  ws.send('{"op":"subscribe","args":["trade"]}')
@@ -151,6 +153,8 @@ ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m"]}');
 }
 ```
 
+<hr>
+
 ### <span id="insurance">每日保险基金更新</span>
 
 ```js
@@ -170,7 +174,7 @@ ws.send('{"op":"subscribe","args":["insurance"]}')
 
 <hr>
 
-### <span id="position">订阅仓位变化消息</position>
+### <span id="position">仓位变化消息</position>
 
 ```js
 ws.send('{"op":"subscribe","args":["position"]}')
@@ -202,7 +206,7 @@ ws.send('{"op":"subscribe","args":["position"]}')
 
 <hr>
 
-### <span id="execution">订阅成交信息</span>
+### <span id="execution">成交信息</span>
 ```js
  ws.send('{"op":"subscribe","args":["execution"]}')
 
@@ -221,4 +225,32 @@ ws.send('{"op":"subscribe","args":["position"]}')
         "trade_time":134234123.121322
      }
  }
+```
+
+<hr>
+
+### <span id="order">委托更新</span>
+
+```js
+ ws.send('{"op":"subscribe","args":["order"]}')
+
+ // 推送的消息格式
+{
+    "topic":"order",
+    "data":{
+        "order_id":"3ceb73c8-11db-45b1-a407-613dba55e5bf",
+        "symbol":"BTCUSD",
+        "side":"Sell",
+        "order_type":"Limit",
+        "price":6418.5,
+        "qty":596801,
+        "time_in_force":"GoodTillCancel",
+        "order_status":"PartiallyFilled",
+        "leaves_qty":596800,
+        "cum_exec_qty":1,
+        "cum_exec_value":0.00015579,
+        "cum_exec_fee":0.00000003,
+        "timestamp":"2018-10-26T10:35:31.000Z"
+    }
+}
 ```
