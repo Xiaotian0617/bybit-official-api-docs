@@ -11,7 +11,7 @@ wss://stream-testnet.bybit.com/realtime
 ### 身份验证
 
 websocket连接需要身份验证通过后才能建立<br>
-在建立连接的请求上附加上身份验证信息进行验证
+在建立连接的请求上附加上身份验证信息进行验证
 
 api_key 可在<a href="https://testnet.bybit.com/user/api-management`">`https://testnet.bybit.com/user/api-management`</a>申请
 
@@ -132,7 +132,7 @@ ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m"]}');
 
 <hr>
 
-### <span id="trade">实时交易信息</span>
+### <span id="trade">实时交易信息</span>
 
 ```js
  ws.send('{"op":"subscribe","args":["trade"]}')
