@@ -72,14 +72,7 @@ ksort($params);
 #### 第二步 ： 将排序后的参数以http GET方式拼接，根据密钥进行 HMAC sha256 加签，然后将得到的结果进行 base64 编码
 
 ```php
-$signString = '';
-
-foreach ($request_data as $key => $value) {
-   if ($key != "" && $value != "") {
-       $signString .= "$key=$value&";
-   }
-}
-
+$signString = http_build_query($request_data, '&');
 $sign = base64_encode(hash_hmac('sha256', $signString, $secret, true));
 ```
 
