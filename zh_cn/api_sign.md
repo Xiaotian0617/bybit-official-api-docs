@@ -20,7 +20,7 @@
 字段名 | 字段释义 |  字段类型 | 是否必填 | 默认值 | 说明
 :- | :- | :- | :- | :- | :-
 api_key | 在平台申请的API_KEY |  string | 是 | 无 |用于身份识别
-timestamp | 请求发起时的时间戳,单位:毫秒 | int64 | 是 | 无 | 服务端收到请求时会校验此参数，校验规则: timestamp < server_time + 1000,其中server_time是服务器时间
+timestamp | 请求发起时的时间戳,单位:毫秒 | int64 | 是 | 无 | UTC时间戳,服务端收到请求时会校验此参数，校验规则: timestamp < server_time + 1000,其中server_time是服务器时间
 recv_window| 配置请求的有效时间,单位:毫秒| int | 否 | 5000 | http请求将会在timestamp+recv_window这个时间点后失效，用于防重放攻击
 sign | 签名信息 |  string | 是 | 无 | 按照一定规则形成的签名信息
 
