@@ -7,6 +7,7 @@
 - insurance topic: walletBalance字段名由`walletBalance`改为`wallet_balance`
 - execution topic: data字段类型由`object`改为`array`
 - order topic: data字段类型由`object`改为`array`
+- 订阅公共类topic不再需要先进行身份验证
 - 增加auth指令，用于身份验证
 
 <hr>
