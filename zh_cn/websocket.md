@@ -10,17 +10,23 @@ wss://stream-testnet.bybit.com/realtime
 
 ### 身份验证
 
-websocket连接需要身份验证通过后才能建立<br>
-在建立连接的请求上附加上身份验证信息进行验证
+对于公共类topic不需要进行身份验证即可订阅,个人类topic则需要先进行身份验证
+
+目前有两种方式进行身份验证
+
+1. 在建立连接的请求上附加上身份验证信息进行认证
+2. 建立连接后通过auth指令认证
+
 
 api_key 可在<a href="https://testnet.bybit.com/user/api-management`">`https://testnet.bybit.com/user/api-management`</a>申请
 
 ```js
+// 第一种认证方式
 var api_key = "";
 var secret = "";
 // http请求的失效时间，防止重放攻击
-// 单位:秒
-var expires = time.now()+1;
+// 单位:毫秒
+var expires = time.now()+1000;
 
 // 消息加签
 var signature = hex(HMAC_SHA256(secret, 'GET/realtime' + expires));
@@ -29,8 +35,16 @@ var signature = hex(HMAC_SHA256(secret, 'GET/realtime' + expires));
 var param = "api_key={api_key}&expires={expires}&signature={signature}";
 
 // 建立连接
-new WebSocket("wsurl?param");
+var ws = new WebSocket("wsurl?param");
+
+// --------------------------------------------------------------------------
+
+// 第二种认证方式
+var ws = new WebSocket("wsurl")
+// signature加签方式与第一种方式一致
+ws.send('{"op":"auth","args":["{api_key}",expires,"{signature}"]}');
 ```
+
 
 ### 如何订阅topic
 
@@ -214,16 +228,18 @@ ws.send('{"op":"subscribe","args":["position"]}')
  {
      "topic":"execution",
      "action":"new",
-     "data":{
-        "symbol":"BTCUSD",
-        "side":"Buy",
-        "order_id":"aaaaaaaa",
-        "price":6400.5,
-        "qty":100,
-        "Leaves_qty":50,
-        "is_maker":true,
-        "trade_time":134234123.121322
-     }
+     "data":[
+         {
+            "symbol":"BTCUSD",
+            "side":"Buy",
+            "order_id":"aaaaaaaa",
+            "price":6400.5,
+            "qty":100,
+            "Leaves_qty":50,
+            "is_maker":true,
+            "trade_time":134234123.121322
+        }
+     ]
  }
 ```
 
@@ -237,20 +253,22 @@ ws.send('{"op":"subscribe","args":["position"]}')
  // 推送的消息格式
 {
     "topic":"order",
-    "data":{
-        "order_id":"3ceb73c8-11db-45b1-a407-613dba55e5bf",
-        "symbol":"BTCUSD",
-        "side":"Sell",
-        "order_type":"Limit",
-        "price":6418.5,
-        "qty":596801,
-        "time_in_force":"GoodTillCancel",
-        "order_status":"PartiallyFilled",
-        "leaves_qty":596800,
-        "cum_exec_qty":1,
-        "cum_exec_value":0.00015579,
-        "cum_exec_fee":0.00000003,
-        "timestamp":"2018-10-26T10:35:31.000Z"
-    }
+    "data":[
+        {
+            "order_id":"3ceb73c8-11db-45b1-a407-613dba55e5bf",
+            "symbol":"BTCUSD",
+            "side":"Sell",
+            "order_type":"Limit",
+            "price":6418.5,
+            "qty":596801,
+            "time_in_force":"GoodTillCancel",
+            "order_status":"PartiallyFilled",
+            "leaves_qty":596800,
+            "cum_exec_qty":1,
+            "cum_exec_value":0.00015579,
+            "cum_exec_fee":0.00000003,
+            "timestamp":"2018-10-26T10:35:31.000Z"
+        }
+    ]
 }
 ```
