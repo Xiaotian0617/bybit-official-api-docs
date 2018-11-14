@@ -235,7 +235,7 @@ ws.send('{"op":"subscribe","args":["position"]}')
             "order_id":"aaaaaaaa",
             "price":6400.5,
             "qty":100,
-            "Leaves_qty":50,
+            "leaves_qty":50,
             "is_maker":true,
             "trade_time":134234123.121322
         }
