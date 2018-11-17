@@ -29,14 +29,15 @@ sign | 签名信息 |  string | 是 | 无 | 按照一定规则形成的签名信
 1. 将对应业务的接口参数和除sign外的公共参数以http GET请求形式拼接，拼接顺序按照参数名升序排列,如调整杠杆接口业务参数有symbol和leverage,则拼接后如下
 
 ``` js
-var param_str = 'api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1541564432';
+var param_str = 'api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1542434791000';
+
 ```
 
 2. 对拼接后的字符串进行加签
 ```js
 var secret = 't7T0YlFnYXk0Fx3JswQsDrViLg1Gh3DUU5Mr';
 var sign = hex(HMAC_SHA256($secret, $param_str));
-// sign = 3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c
+// sign = 670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908
 ```
 
 3.附加上sign参数，发送http请求,目前支持以下两种形式提交参数
@@ -47,7 +48,7 @@ Host: api-testnet.bybit.com
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 144
 
-api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1541564432&sign=3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c
+api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1542434791000&sign=670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908
 
 ```
 
