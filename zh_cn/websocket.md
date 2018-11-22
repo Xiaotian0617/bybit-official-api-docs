@@ -1,7 +1,12 @@
 ### websocket推送
 ```
 // websocket连接地址
+
+// 测试网地址
 wss://stream-testnet.bybit.com/realtime
+
+// 主网地址
+wss://stream.bybit.com/realtime
 ```
 
 ### 连接限制
