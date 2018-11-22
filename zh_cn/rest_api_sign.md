@@ -1,7 +1,7 @@
 ## 机构api签名
 ### 获取你的 api_key 和 密钥
 
-// 测试网地址
+// 测试网地址
 
 <a href="https://testnet.bybit.com/user/api-management">https://testnet.bybit.com/user/api-management</a>
 
