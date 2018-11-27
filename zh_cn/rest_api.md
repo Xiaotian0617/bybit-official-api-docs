@@ -28,9 +28,9 @@
 
 ### 资金费用
 
-* [查询上个周期的资金费率](#fundingprev-funding-rateget)
+* [查询上个周期的资金费率](#open-apifundingprev-funding-rateget)
 
-* [查询上个周期资金费用结算信息](#fundingprev-fundingget)
+* [查询上个周期资金费用结算信息](#open-apifundingprev-fundingget)
 
 
 
@@ -662,21 +662,22 @@ https://api.bybit.com/position/change-position-margin
 ```
 
 -----------
-## <span id="fundingprev-funding-rateget">查询上个周期的资金费率 </span>
+## <span id="open-apifundingprev-funding-rateget">查询上个周期的资金费率 </span>
 #### 接口功能
 
 > UTC时间每天0点、8点、16点产生一个资金费率
 
 假设当前时间是12点，则返回的是8点产生的资金费率
+ 
 
 #### URL
 
 ```
 // 测试网地址
-https://api-testnet.bybit.com/funding/prev-funding-rate
+https://api-testnet.bybit.com/open-api/funding/prev-funding-rate
 
 // 主网地址
-https://api.bybit.com/funding/prev-funding-rate
+https://api.bybit.com/open-api/funding/prev-funding-rate
 ```
 
 #### HTTP请求方式
@@ -695,21 +696,21 @@ https://api.bybit.com/funding/prev-funding-rate
 ```js
 
 {
-'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
-'ret_msg':'ok' // 错误消息,
-'ext_code':'', // 补充错误码
-'result': {
-    'symbol':'BTCUSD',
-    'funding_rate':'0.00375000', // 资金费率,当资金费率是正数时，多仓向空仓支付资金费用.为负数时，空仓向多仓支付资金费用
-    'funding_rate_timestamp':1539950401 //资金费率产生时间,UTC时间戳
+    'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
+    'ret_msg':'ok' // 错误消息,
+    'ext_code':'', // 补充错误码
+    'result': {
+        'symbol':'BTCUSD',
+        'funding_rate':'0.00375000', // 资金费率,当资金费率是正数时，多仓向空仓支付资金费用.为负数时，空仓向多仓支付资金费用
+        'funding_rate_timestamp':1539950401 //资金费率产生时间,UTC时间戳
     },
-'time_now':'1539778407.210858',    UTC时间戳
+    'time_now':'1539778407.210858',    UTC时间戳
 }
 
 ```
 
 -----------
-## <span id="fundingprev-fundingget">查询上个周期资金费用结算信息 </span>
+## <span id="open-apifundingprev-fundingget">查询上个周期资金费用结算信息 </span>
 #### 接口功能
 
 > UTC时间每天0点、8点、16点进行资金费用结算
@@ -725,10 +726,10 @@ https://api.bybit.com/funding/prev-funding-rate
 
 ```
 // 测试网地址
-https://api-testnet.bybit.com/funding/prev-funding
+https://api-testnet.bybit.com/open-api/funding/prev-funding
 
 // 主网地址
-https://api.bybit.com/funding/prev-funding
+https://api.bybit.com/open-api/funding/prev-funding
 ```
 
 #### HTTP请求方式
@@ -747,18 +748,18 @@ https://api.bybit.com/funding/prev-funding
 ```js
 
 {
-'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
-'ret_msg':'ok' // 错误消息,
-'ext_code':'', // 补充错误码
-'result': {
-    'symbol': 'BTCUSD',
-    'side': 'Buy', // 进行结算时仓位的持仓方向
-    'size': 10,   // 进行结算时仓位的数量
-    'funding_rate': 0.00375 // 结算时的资金费率
-    'exec_fee': 0.00000116, // 结算资金费用, 为正数时,多仓支付费用，空仓收取费用; 为负数时，多仓收取费用，空仓支付费用
-    'exec_timestamp': 1539950401, // 结算时间，UTC时间戳
+    'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
+    'ret_msg':'ok' // 错误消息,
+    'ext_code':'', // 补充错误码
+    'result': {
+        'symbol': 'BTCUSD',
+        'side': 'Buy', // 进行结算时仓位的持仓方向
+        'size': 10,   // 进行结算时仓位的数量
+        'funding_rate': 0.00375 // 结算时的资金费率
+        'exec_fee': 0.00000116, // 结算资金费用, 为正数时,多仓支付费用，空仓收取费用; 为负数时，多仓收取费用，空仓支付费用
+        'exec_timestamp': 1539950401, // 结算时间，UTC时间戳
     },
-'time_now':'1539778407.210858',    UTC时间戳
+    'time_now':'1539778407.210858',    UTC时间戳
 }
 
 ```
