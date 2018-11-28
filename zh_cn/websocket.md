@@ -186,7 +186,7 @@ ws.send('{"op":"subscribe","args":["insurance"]}')
      "data":{
         "currency":"BTC",
         "timestamp":"2018-10-24T12:00:00.000Z",
-        "walletBalance":140224705439 // 单位:聪
+        "wallet_balance":140224705439 // 单位:聪
      }
  }
 ```
