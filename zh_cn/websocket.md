@@ -22,9 +22,6 @@ wss://stream.bybit.com/realtime
 1. 在建立连接的请求上附加上身份验证信息进行认证
 2. 建立连接后通过auth指令认证
 
-
-api_key 可在<a href="https://testnet.bybit.com/user/api-management`">`https://testnet.bybit.com/user/api-management`</a>申请
-
 ```js
 // 第一种认证方式
 var api_key = "";
