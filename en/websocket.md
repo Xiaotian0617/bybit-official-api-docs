@@ -1,71 +1,75 @@
-### websocket market data
+### WebSocket Data
 ```
 // websocket server address
+
+//For Testnet
 wss://stream-testnet.bybit.com/realtime
+
+//For Mainnet
+wss://stream.bybit.com/realtime
 ```
  
-### Rate limit
+### Rate Limits
  
-A single api_key can establish 20 connections simultaneously, attempt to establish additional connection after 20 connections will be rejected.
+One single api_key can establish 20 connections simultaneously. Any additional connection after 20 connections will be rejected.
  
 ### Authentication
  
 For public topics, no authentication is required. As for private topics, authentication is required.
  
-Currently, there are two ways to authenticate
+Currently, there are two ways to authenticate your identity.
  
-1. Apply for authentication upon establishing connection request
-2. Apply for authentication after establishing connection through auth request
+1. Apply for authentication when establishing a connection.
+2. Apply for authentication after establishing a connection through auth request.
  
-api_key can be applied at <a href="https://testnet.bybit.com/user/api-management`">`https://testnet.bybit.com/user/api-management`</a>
  
 ```js
 // First way to authenticate
 var api_key = "";
 var secret = "";
-// http time where request become invalid, prevent replay attack防止重放攻击
+// A UNIX timestamp after which the request become invalid. This is to prevent replay attacks.
 // unit:millisecond
 var expires = time.now()+1000;
- 
+
 // Signature
 var signature = hex(HMAC_SHA256(secret, 'GET/realtime' + expires));
  
-// 参数列表 Parameter
+// Parameters string
 var param = "api_key={api_key}&expires={expires}&signature={signature}";
  
-// 建立连接 Websocket/Establish connection
+// Establishing connection
 var ws = new WebSocket("wsurl?param");
  
 // --------------------------------------------------------------------------
  
 // Second way to authenticate
 var ws = new WebSocket("wsurl")
-// signature same as the first way to authenticate
+// Signature is the same as the first way's
 ws.send('{"op":"auth","args":["{api_key}",expires,"{signature}"]}');
 ```
  
  
-### How to subscribe to topic
+### How to Subscribe to a New Topic
  
-After establishing connection, subscribe topic through sending json request. The specific format is as follows连接建立后，通过发送json格式的订阅指令来进行订阅topic,具体格式如下
+After establishing the connection, one can subscribe to a new topic by sending a json request. The specific formats are as follows:
 ```js
 ws.send('{"op":"subscribe","args":["topic","topic.filter"]}');
  
-// Same type of filter have multiple hours 同一个类型的filter有多个时，for 以'|' segmentation分割
-// If subscribe to BTCUSD one minute and three minute kline
+// Split the multiple filters by '|' if they belong to the same cluster of topics.
+// For example, subscribing to BTCUSD one minute and three minutes kline.
 ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m|3m"]}');
  
-// To subscribe to data of the same type of filter, please use 订阅同一个类型filter的所有数据时请使用'*'
-// If subscribe to all product interval kline 如订阅所有产品的所有interval kline
+// Use '*' when subscribing to all data of the same type filter.
+// For exmaple, subscribing to all products' interval kline.
 ws.send('{"op":"subscribe","args":["kline.*.*"]}')
  
  
-// Result of subscribed topic 订阅topic结果
-// Every subscription has a response, response format is as follows 每一个订阅指令都会有一个响应,响应格式如下
+// Result of subscribed topic
+// Every subscription will have a response. The response is sent in the following format:
 {
-   "success":true, // Whether subscription is successful订阅是否成功
-   "ret_msg":"",   // Successful subscription = zero, unsuccessful subscription shows error message 订阅成功时为空，失败时为具体错误信息
-   "request":{     // Request to subscribe 请求订阅的指令
+   "success":true, // Whether subscription is successful
+   "ret_msg":"",   // For successful subscription it shows "", otherwise it shows error message
+   "request":{     // Request to your subscription
        "op":"subscribe",
        "args":[
            "kline.BTCUSD.1m"
@@ -75,27 +79,28 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
  
 ```
  
-## Currently supported topic
+## Currently Supported Topics
  
-### Public topic
-* [orderBook25](#orderBook25) `// 25orderBook`
-* [kline](#kline) `// K line`
-* [trade](#trade) `// real time trade 实时交易`
-* [insurance](#insurance) `// daily insurance fund update每日保险基金更新`
+### Public Topic
+* [orderBook25](#orderBook25) `// OrderBook of 25 depth per side`
+* [kline](#kline) `// Candlestick chart`
+* [trade](#trade) `// Real-time trading information`
+* [insurance](#insurance) `// Daily insurance fund update`
+* [instrument](#instrument) `// Lastet information for symbol`
  
-### Private topic
-* [position](#position) `// positions change 仓位变化`
-* [execution](#execution) `//active order execution message 委托单成交信息`
-* [order](#order) `// active order update委托单的更新`
+### Private Topic
+* [position](#position) `// Positions of your account`
+* [execution](#execution) `// Execution message`
+* [order](#order) `// Update for your orders`
  
 <hr>
  
-### <span id="orderBook25">subscribe 25orderBook</span>
+### <span id="orderBook25">OrderBook of 25 depth per side</span>
 ```js
 // Send subscription request
 ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
  
-// format of message sent 推送的消息格式
+// Response content format
 {
    "topic":"orderBook25",
    "action":"snapshot",
@@ -114,9 +119,9 @@ ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
  
 <hr>
  
-### <span id="kline">k line</span>
+### <span id="kline">Candlestick chart</span>
  
-* currently supported interval目前支持的interval
+* Currently supported interval
 * 1m 3m 5m 15m 30m
 * 1h 2h 3h 4h 6h
 * 1d 3d
@@ -125,7 +130,7 @@ ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
 ```js
 ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m"]}');
  
-// format of message sent 推送的消息格式
+// Response content format
 {
    "topic":"kline.BTCUSD.1m",
    "data":{
@@ -145,12 +150,12 @@ ws.send('{"op":"subscribe","args":["kline.BTCUSD.1m"]}');
  
 <hr>
  
-### <span id="trade"> real time trade message 实时交易信息</span>
+### <span id="trade"> Real-time trading information </span>
  
 ```js
 ws.send('{"op":"subscribe","args":["trade"]}')
  
-// format of message sent 推送的消息格式
+// Response content format
 {
    "topic":"trade.BTCUSD",
    "data":[
@@ -168,39 +173,63 @@ ws.send('{"op":"subscribe","args":["trade"]}')
  
 <hr>
  
-### <span id="insurance">daily insurance fund update每日保险基金更新</span>
+### <span id="insurance">Daily insurance fund update</span>
  
 ```js
 ws.send('{"op":"subscribe","args":["insurance"]}')
  
-// format of message sent 推送的消息格式
+// Response content format
 {
     "topic":"insurance.BTC",
     "action":"update",
     "data":{
        "currency":"BTC",
        "timestamp":"2018-10-24T12:00:00.000Z",
-       "walletBalance":140224705439 // unit: ? 单位:聪
+       "walletBalance":140224705439 // unit: Satoshi
     }
 }
 ```
  
+ 
+ <hr>
+ 
+### <span id="instrument"> Lastet information for symbol</span>
+ 
+```js
+ws.send('{"op":"subscribe","args":["instrument.BTCUSD"]}')
+
+// Response content format
+// NOTE: Message belong to "data" class will only be sent to you when it changes. 
+// For example, if 'index_price' and 'mark_price' changed and the 'transaction price' didn't change, then only 'symbol', 'index_price' and 'mark_price' will be sent to you, without 'last_price'.
+ {
+     "topic":"instrument.BTCUSD",
+     "data":{
+        "symbol": "BTCUSD",
+        "mark_price": 5000.5, // mark price
+        "index_price": 5000.5, // index price
+        "last_price": 5000.5 // latest price
+     }
+ }
+```
+ 
+ 
+
 <hr>
  
-### <span id="position">position change message仓位变化消息</position>
+### <span id="position">Positions of your account</position>
  
 ```js
 ws.send('{"op":"subscribe","args":["position"]}')
  
-// format of message sent 推送的消息格式
+// Response content format
 {
    "topic":"position:BTCUSD",
    "action":"update",
    "data":
    {
-       "symbol":"BTCUSD",                  // symbol 产品
-       "side":"Sell",                      // direction
-       "size":11,                          // quantity
+       "symbol":"BTCUSD",                  // the contract for this position
+       "side":"Sell",                      // side
+       "size":11,                          // the current position amount
        "entry_price":6907.291588174717,    // entry price
        "liq_price":7100.234,               // liquidation price
        "bust_price":7088.1234,             // bankruptcy price
@@ -209,21 +238,20 @@ ws.send('{"op":"subscribe","args":["position"]}')
        "trailing_stop":0,                  // trailing stop points
        "position_value":0.00159252,        // positional value
        "leverage":1,                       // leverage
-       "position_status":"Normal",         // status of position(Normal:normal Liq:in the process of liquidation Adl:in the process of ADL)
+       "position_status":"Normal",         // status of position (Normal:normal Liq:in the process of liquidation Adl:in the process of Auto-Deleveraging)
        "auto_add_margin":0,                // Auto margin replenishment enabled (0:no 1:yes)
-       "position_seq":14                   // position sequence number 仓位版本号
+       "position_seq":14                   // position version number
    }
 }
 ```
- 
- 
+
 <hr>
  
-### <span id="execution">execution message 成交信息</span>
+### <span id="execution">Execution message</span>
 ```js
 ws.send('{"op":"subscribe","args":["execution"]}')
  
-// format of message sent 推送的消息格式
+// Response content format
 {
     "topic":"execution",
     "action":"new",
@@ -244,12 +272,12 @@ ws.send('{"op":"subscribe","args":["execution"]}')
  
 <hr>
  
-### <span id="order">active order update委托更新</span>
+### <span id="order">Update for your orders</span>
  
 ```js
 ws.send('{"op":"subscribe","args":["order"]}')
  
-// format of message sent 推送的消息格式
+// Response content format
 {
    "topic":"order",
    "data":[

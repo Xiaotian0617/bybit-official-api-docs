@@ -1,10 +1,10 @@
-### Port documentation
+### API documentation
  
-api authentication and port message
+API authentication and API documentation
  
-* [api authentication](./api_sign.md)
+* [API authentication](./api_sign.md)
  
-* [api port message](./api.md)
+* [API documentation](./api.md)
  
-[websocket market data](./websocket.md)
+[WebSocket data](./websocket.md)
  
