@@ -2,9 +2,9 @@
  
 API authentication and API documentation
  
-* [API authentication](./api_sign.md)
+* [API authentication](./rest_api_sign.md)
  
-* [API documentation](./api.md)
+* [API documentation](./rest_api.md)
  
 [WebSocket data](./websocket.md)
  
