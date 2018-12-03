@@ -1,6 +1,13 @@
 ## 机构api签名
 ### 获取你的 api_key 和 密钥
+
+// 测试网地址
+
 <a href="https://testnet.bybit.com/user/api-management">https://testnet.bybit.com/user/api-management</a>
+
+// 主网地址
+
+<a href="https://www.bybit.com/app/user/api-management">https://www.bybit.com/app/user/api-management</a>
 
 ### 频率限制
 

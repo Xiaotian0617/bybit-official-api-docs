@@ -1,7 +1,12 @@
 ### websocket推送
 ```
 // websocket连接地址
+
+// 测试网地址
 wss://stream-testnet.bybit.com/realtime
+
+// 主网地址
+wss://stream.bybit.com/realtime
 ```
 
 ### 连接限制
@@ -16,9 +21,6 @@ wss://stream-testnet.bybit.com/realtime
 
 1. 在建立连接的请求上附加上身份验证信息进行认证
 2. 建立连接后通过auth指令认证
-
-
-api_key 可在<a href="https://testnet.bybit.com/user/api-management`">`https://testnet.bybit.com/user/api-management`</a>申请
 
 ```js
 // 第一种认证方式
@@ -82,12 +84,13 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
 * [orderBook25](#orderBook25) `// 25档orderBook`
 * [kline](#kline) `// K线`
 * [trade](#trade) `// 实时交易`
-* [insurance](#insurance) `//每日保险基金更新`
+* [insurance](#insurance) `// 每日保险基金更新`
+* [instrument](#instrument) `// 产品最新信息`
 
 ### 个人类topic
 * [position](#position) `// 仓位变化`
 * [execution](#execution) `// 委托单成交信息`
-* [order](#order) `//委托单的更新`
+* [order](#order) `// 委托单的更新`
 
 <hr>
 
@@ -181,11 +184,31 @@ ws.send('{"op":"subscribe","args":["insurance"]}')
      "data":{
         "currency":"BTC",
         "timestamp":"2018-10-24T12:00:00.000Z",
-        "walletBalance":140224705439 // 单位:聪
+        "wallet_balance":140224705439 // 单位:聪
      }
  }
 ```
 
+<hr>
+
+### <span id="instrument">产品最新行情</span>
+
+```js
+ws.send('{"op":"subscribe","args":["instrument.BTCUSD"]}')
+
+// 推送的消息格式
+// NOTE: 这里data下的字段只在其变化时推送，无变化时推送的数据无该字段
+// 比如index_price和mark_price变化了，而成交价没有变化，则推送的数据只有symbol、index_price、mark_price而没有last_price
+ {
+     "topic":"instrument.BTCUSD",
+     "data":{
+        "symbol": "BTCUSD",
+        "mark_price": 5000.5, // 标记价格
+        "index_price": 5000.5, // 指数价格
+        "last_price": 5000.5 // 最新成交价
+     }
+ }
+```
 <hr>
 
 ### <span id="position">仓位变化消息</position>

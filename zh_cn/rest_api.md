@@ -26,13 +26,20 @@
 
 * [更新保证金](#positionchange-position-marginpost)
 
+### 资金费用
+
+* [查询上个周期的资金费率](#open-apifundingprev-funding-rateget)
+
+* [查询上个周期资金费用结算信息](#open-apifundingprev-fundingget)
+
+
 
 -----------
 ## <span id="open-apiordercreatepost">创建活动委托单 </span>
 #### 接口功能
 
 > 所有活动委托都必须填写 &#39;side&#39;, &#39;symbol&#39;, &#39;order_type&#39;, &#39;qty&#39;, &#39;price&#39;, &#39;time_in_force&#39;参数，其它参数除非有特殊说明，否则都是可选的。
-市价活动委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。
+市价活动委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。当且仅当选择市价单时，&#39;price&#39;, &#39;time_in_force&#39;可为空！
 
 限价活动委托: 您可以为您的订单设置一个执行价格，当市场价格达到您的设置价格时，系统会为您成交订单。
 
@@ -48,7 +55,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/order/create](https://api-testnet.bybit.com/open-api/order/create)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/order/create
+
+// 主网地址
+https://api.bybit.com/open-api/order/create
+```
 
 #### HTTP请求方式
 
@@ -109,7 +122,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/order/list](https://api-testnet.bybit.com/open-api/order/list)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/order/list
+
+// 主网地址
+https://api.bybit.com/open-api/order/list
+```
 
 #### HTTP请求方式
 
@@ -161,7 +180,7 @@
                 }
             ],
             'current_page': 1,
-            'total': 1
+            'last_page': 1
         },
         'time_now':'1539781050.462841'
     }
@@ -178,7 +197,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/order/cancel](https://api-testnet.bybit.com/open-api/order/cancel)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/order/cancel
+
+// 主网地址
+https://api.bybit.com/open-api/order/cancel
+```
 
 #### HTTP请求方式
 
@@ -229,9 +254,9 @@
 ## <span id="open-apistop-ordercreatepost">创建条件委托单 </span>
 #### 接口功能
 
-> 所有活动委托都必须填写 &#39;side&#39;, &#39;symbol&#39;, &#39;order_type&#39;, &#39;qty&#39;, &#39;price&#39;, &#39;stop_px&#39;, &#39;time_in_force&#39;参数，其它参数除非有特殊说明，否则都是可选的。
+> 所有活动委托都必须填写 &#39;side&#39;, &#39;symbol&#39;, &#39;order_type&#39;, &#39;qty&#39;, &#39;price&#39;, &#39;base_price&#39;, &#39;stop_px&#39;, &#39;time_in_force&#39;参数，其它参数除非有特殊说明，否则都是可选的。
 
-市价活动委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。
+市价活动委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。当且仅当选择市价单时，&#39;price&#39;, &#39;time_in_force&#39;可为空！
 
 限价活动委托: 您可以为您的订单设置一个执行价格，当市场价格达到您的设置价格时，系统会为您成交订单。
 
@@ -249,7 +274,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/stop-order/create](https://api-testnet.bybit.com/open-api/stop-order/create)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/stop-order/create
+
+// 主网地址
+https://api.bybit.com/open-api/stop-order/create
+```
 
 #### HTTP请求方式
 
@@ -264,6 +295,7 @@
 |order_type |true |string |委托单价格类型, 有效选项:Limit, Market (Limit Market )    |
 |qty |true |integer |委托数量 |
 |price |true |integer |条件委托执行价格 |
+|base_price |true |integer |当前市价 |
 |stop_px |true |integer |条件委托下单时市价 |
 |time_in_force |true |string |执行策略, 有效选项:GoodTillCancel, ImmediateOrCancel, FillOrKill (GoodTillCancel ImmediateOrCancel FillOrKill )    |
 |order_link_id |false |string |机构自定义订单ID, 最大长度36位，且同一机构下自定义ID不可重复 |
@@ -307,7 +339,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/stop-order/list](https://api-testnet.bybit.com/open-api/stop-order/list)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/stop-order/list
+
+// 主网地址
+https://api.bybit.com/open-api/stop-order/list
+```
 
 #### HTTP请求方式
 
@@ -355,7 +393,7 @@
                 }
             ],
             'current_page':1,
-            'total':1
+            'last_page':1
         },
         'time_now':'1539781050.462841'
     }
@@ -366,13 +404,19 @@
 ## <span id="open-apistop-ordercancelpost">撤消条件委托单 </span>
 #### 接口功能
 
-> 所有撤销条件委托都必须填写 &#39;order_id&#39;，在您创建条件委托成功时会为您返回36位唯一的订单ID。
+> 所有撤销条件委托都必须填写 &#39;stop_order_id&#39;，在您创建条件委托成功时会为您返回36位唯一的订单ID。
 
 您可以撤销所有未被激活的条件委托。本质上所有条件委托在被激活后都是属于活动委托，所以条件委托一旦被激活，您需要通过调用取消活动委托接口来取消所有未成交、部分成交的活动委托单。同样全部成交的活动委托不可取消。
 
 #### URL
 
-> [https://api-testnet.bybit.com/open-api/stop-order/cancel](https://api-testnet.bybit.com/open-api/stop-order/cancel)
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/stop-order/cancel
+
+// 主网地址
+https://api.bybit.com/open-api/stop-order/cancel
+```
 
 #### HTTP请求方式
 
@@ -423,7 +467,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/user/leverage](https://api-testnet.bybit.com/user/leverage)
+```
+// 测试网地址
+https://api-testnet.bybit.com/user/leverage
+
+// 主网地址
+https://api.bybit.com/user/leverage
+```
 
 #### HTTP请求方式
 
@@ -463,7 +513,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/user/leverage/save](https://api-testnet.bybit.com/user/leverage/save)
+```
+// 测试网地址
+https://api-testnet.bybit.com/user/leverage/save
+
+// 主网地址
+https://api.bybit.com/user/leverage/save
+```
 
 #### HTTP请求方式
 
@@ -499,7 +555,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/position/list](https://api-testnet.bybit.com/position/list)
+```
+// 测试网地址
+https://api-testnet.bybit.com/position/list
+
+// 主网地址
+https://api.bybit.com/position/list
+```
 
 #### HTTP请求方式
 
@@ -565,7 +627,13 @@
 
 #### URL
 
-> [https://api-testnet.bybit.com/position/change-position-margin](https://api-testnet.bybit.com/position/change-position-margin)
+```
+// 测试网地址
+https://api-testnet.bybit.com/position/change-position-margin
+
+// 主网地址
+https://api.bybit.com/position/change-position-margin
+```
 
 #### HTTP请求方式
 
@@ -588,6 +656,109 @@
     'ret_msg':'ok' 错误消息,
     'ext_code':'', 补充错误码
     'result': null, 根据 ret_code 判断是否请求成功，result返回恒为null
+    'time_now':'1539778407.210858',    UTC时间戳
+}
+
+```
+
+-----------
+## <span id="open-apifundingprev-funding-rateget">查询上个周期的资金费率 </span>
+#### 接口功能
+
+> UTC时间每天0点、8点、16点产生一个资金费率
+
+假设当前时间是12点，则返回的是8点产生的资金费率
+ 
+
+#### URL
+
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/funding/prev-funding-rate
+
+// 主网地址
+https://api.bybit.com/open-api/funding/prev-funding-rate
+```
+
+#### HTTP请求方式
+
+> get
+
+#### 请求参数
+
+|参数|必选|类型|说明|
+|:----- |:-------|:-----|----- |
+|symbol |true |string |产品 (BTCUSD ETHUSD )    |
+
+
+#### 返回示例
+
+```js
+
+{
+    'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
+    'ret_msg':'ok' // 错误消息,
+    'ext_code':'', // 补充错误码
+    'result': {
+        'symbol':'BTCUSD',
+        'funding_rate':'0.00375000', // 资金费率,当资金费率是正数时，多仓向空仓支付资金费用.为负数时，空仓向多仓支付资金费用
+        'funding_rate_timestamp':1539950401 //资金费率产生时间,UTC时间戳
+    },
+    'time_now':'1539778407.210858',    UTC时间戳
+}
+
+```
+
+-----------
+## <span id="open-apifundingprev-fundingget">查询上个周期资金费用结算信息 </span>
+#### 接口功能
+
+> UTC时间每天0点、8点、16点进行资金费用结算
+
+当前周期的资金费用结算是根据上个周期的资金费率来进行结算
+
+比如16点结算时是按照8点产生的资金费率来进行结算
+
+而16点产生的资金费率则会在第二天0点结算时使用
+
+
+#### URL
+
+```
+// 测试网地址
+https://api-testnet.bybit.com/open-api/funding/prev-funding
+
+// 主网地址
+https://api.bybit.com/open-api/funding/prev-funding
+```
+
+#### HTTP请求方式
+
+> get
+
+#### 请求参数
+
+|参数|必选|类型|说明|
+|:----- |:-------|:-----|----- |
+|symbol |true |string |产品 (BTCUSD ETHUSD )    |
+
+
+#### 返回示例
+
+```js
+
+{
+    'ret_code':0   // 返回码(0：成功、-101：参数校验失败)
+    'ret_msg':'ok' // 错误消息,
+    'ext_code':'', // 补充错误码
+    'result': {
+        'symbol': 'BTCUSD',
+        'side': 'Buy', // 进行结算时仓位的持仓方向
+        'size': 10,   // 进行结算时仓位的数量
+        'funding_rate': 0.00375 // 结算时的资金费率
+        'exec_fee': 0.00000116, // 结算资金费用, 为正数时,多仓支付费用，空仓收取费用; 为负数时，多仓收取费用，空仓支付费用
+        'exec_timestamp': 1539950401, // 结算时间，UTC时间戳
+    },
     'time_now':'1539778407.210858',    UTC时间戳
 }
 
