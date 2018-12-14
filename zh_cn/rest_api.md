@@ -75,7 +75,7 @@ https://api.bybit.com/open-api/order/create
 |symbol |true |string |产品类型, 有效选项:BTCUSD, ETHUSD (BTCUSD ETHUSD )    |
 |order_type |true |string |委托单价格类型, 有效选项:Limit, Market (Limit Market )    |
 |qty |true |integer |委托数量, 单比最大1百万 |
-|price |true |integer |委托价格, 在没有仓位时，出价需大于市价10%且小于1百万。如有仓位时则需优于强平价. 单笔价格增减最小单位为0.5 |
+|price |true |integer |委托价格, 在没有仓位时，做多的委托价格需高于市价的10%、低于1百万。如有仓位时则需优于强平价。单笔价格增减最小单位为0.5。 |
 |time_in_force |true |string |执行策略, 有效选项:GoodTillCancel, ImmediateOrCancel, FillOrKill (GoodTillCancel ImmediateOrCancel FillOrKill )    |
 |order_link_id |false |string |机构自定义订单ID, 最大长度36位，且同一机构下自定义ID不可重复 |
 
@@ -110,6 +110,7 @@ https://api.bybit.com/open-api/order/create
             'updated_at':'2018-10-15T04:12:19.000Z',
         },
         'time_now':'1539778407.210858',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -145,6 +146,7 @@ https://api.bybit.com/open-api/order/list
 |order |false |string |升序降序， 默认降序 (desc asc )    |
 |page |false |integer |页码，默认取第一页数据 |
 |limit |false |integer |一页数量，一页默认展示20条数据 |
+|order_status |false |string |指定订单状态查询订单列表。不传该参数则默认查询所有状态订单。该参数支持多状态查询，状态之间用英文逗号分割。状态参数：Created,New,PartiallyFilled,Filled,Cancelled,Rejected |
 
 
 #### 返回示例
@@ -182,7 +184,8 @@ https://api.bybit.com/open-api/order/list
             'current_page': 1,
             'last_page': 1
         },
-        'time_now':'1539781050.462841'
+        'time_now':'1539781050.462841',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -246,6 +249,7 @@ https://api.bybit.com/open-api/order/cancel
             'updated_at':'2018-10-15T04:12:19.000Z',
         },
         'time_now':'1539778407.210858',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -254,13 +258,11 @@ https://api.bybit.com/open-api/order/cancel
 ## <span id="open-apistop-ordercreatepost">创建条件委托单 </span>
 #### 接口功能
 
-> 所有活动委托都必须填写 &#39;side&#39;, &#39;symbol&#39;, &#39;order_type&#39;, &#39;qty&#39;, &#39;price&#39;, &#39;base_price&#39;, &#39;stop_px&#39;, &#39;time_in_force&#39;参数，其它参数除非有特殊说明，否则都是可选的。
+> 所有条件委托都必须填写 &#39;side&#39;, &#39;symbol&#39;, &#39;order_type&#39;, &#39;qty&#39;, &#39;price&#39;, &#39;base_price&#39;, &#39;stop_px&#39;, &#39;time_in_force&#39;参数，其它参数除非有特殊说明，否则都是可选的。
 
-市价活动委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。当且仅当选择市价单时，&#39;price&#39;, &#39;time_in_force&#39;可为空！
+市价条件委托: 一个传统的市场价格订单,会以当前的最优价格为您成交订单。当且仅当选择市价单时，&#39;price&#39;, &#39;time_in_force&#39;可为空！
 
-限价活动委托: 您可以为您的订单设置一个执行价格，当市场价格达到您的设置价格时，系统会为您成交订单。
-
-止盈止损: 您仅能在开仓时设置止盈止损条件单，一旦持有仓位后提交活动委托时关联的止盈止损则不再有效。
+限价条件委托: 您可以为您的订单设置一个执行价格，当市场价格达到您的设置价格时，系统会为您成交订单。
 
 委托数量: 表示您要购买/卖出的永续合约数，对于委托数量目前Bybit只允许提交正整数。
 
@@ -270,7 +272,7 @@ https://api.bybit.com/open-api/order/cancel
 
 自定义条件单ID: 您可以自定义活动委托订单ID，我们会为您关联到系统的订单ID，并把系统的唯一订单ID在活动委托创建成功后一并返回给您，您可以使用该订单ID去取消活动委托，同时要求您传递的自定义订单ID最大长度不超过36个字段且唯一。
 
-请注意: 开仓设置条件单是是不允许创建止盈止损条件单，如需开仓设置止盈止损条件单请使用创建活动委托接口。只允许最多创建10个条件委托单(不包含止盈止损)
+请注意: 只允许最多创建10个条件委托单
 
 #### URL
 
@@ -295,7 +297,7 @@ https://api.bybit.com/open-api/stop-order/create
 |order_type |true |string |委托单价格类型, 有效选项:Limit, Market (Limit Market )    |
 |qty |true |integer |委托数量 |
 |price |true |integer |条件委托执行价格 |
-|base_price |true |integer |当前市价 |
+|base_price |true |integer |当前市价。用于和stop_px值进行比较，确定当前条件委托是看空到stop_px时触发还是看多到stop_px触发。主要是用来标识当前条件单预期的方向 |
 |stop_px |true |integer |条件委托下单时市价 |
 |time_in_force |true |string |执行策略, 有效选项:GoodTillCancel, ImmediateOrCancel, FillOrKill (GoodTillCancel ImmediateOrCancel FillOrKill )    |
 |order_link_id |false |string |机构自定义订单ID, 最大长度36位，且同一机构下自定义ID不可重复 |
@@ -327,6 +329,7 @@ https://api.bybit.com/open-api/stop-order/create
             'updated_at':'2018-10-15T04:12:19.000Z',
         }
         'time_now':'1539778407.210858',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -395,7 +398,8 @@ https://api.bybit.com/open-api/stop-order/list
             'current_page':1,
             'last_page':1
         },
-        'time_now':'1539781050.462841'
+        'time_now':'1539781050.462841',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -455,6 +459,7 @@ https://api.bybit.com/open-api/stop-order/cancel
             'updated_at':'2018-10-15T04:12:19.000Z',
         }
         'time_now':'1539778407.210858',    UTC时间戳
+        'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
     }
 
 ```
@@ -501,6 +506,7 @@ https://api.bybit.com/user/leverage
             'leverage': 1
         }
     'time_now':'1539778407.210858',    UTC时间戳
+    'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
 }
  
 ```
@@ -543,6 +549,7 @@ https://api.bybit.com/user/leverage/save
     'ext_code':''  补充错误码,
     'result': null,根据 ret_code 判断是否请求成功，result返回恒为null
     'time_now':'1539778407.210858',    UTC时间戳
+    'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
 }
  
 ```
@@ -551,7 +558,7 @@ https://api.bybit.com/user/leverage/save
 ## <span id="positionlistget">我的仓位 </span>
 #### 接口功能
 
-> 获取我的仓位列表。
+> 获取我的仓位列表。通过该接口可以获取当前用户的持仓信息，如持仓数量、账户余额等信息
 
 #### URL
 
@@ -614,7 +621,9 @@ https://api.bybit.com/position/list
             'updated_at': '2018-10-20T13:43:21.000Z'
         }
     ],
-    'time_now': '1540043097.995523'      UTC时间戳
+    'time_now': '1540043097.995523',    UTC时间戳
+    'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
+
 }
  *    
 ```
@@ -657,6 +666,7 @@ https://api.bybit.com/position/change-position-margin
     'ext_code':'', 补充错误码
     'result': null, 根据 ret_code 判断是否请求成功，result返回恒为null
     'time_now':'1539778407.210858',    UTC时间戳
+    'rate_limit_status': 0,            当前时间区间内(1分钟)该类型接口剩余访问次数
 }
 
 ```

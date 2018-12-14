@@ -138,7 +138,7 @@
 |order |false |string |Ascending or descending. Default as descending  (desc, asc )   |
 |page |false |integer |Page. Default getting first page data |
 |limit |false |integer |Limit for data size per page. Default as showing 20 pieces of data per page |
- 
+|order_status |false |string | Query your orders for all statuses if 'order_status' is empty. If you want to query orders with specific statuses , you can pass the order_status split by ','.  Available order_status: Created, New, PartiallyFilled, Filled, Cancelled, Rejected 
  
 #### Response example
  
@@ -287,7 +287,7 @@
 |order_type |true |string |Conditional order type. Valid option: Limit, Market |
 |qty |true |integer |Order quantity. Maximum quantity of 1 million |
 |price| true | integer | Execution price for conditional order|
-|base_price |true |integer | -------------- |
+|base_price |true |integer | Send current market price. It will be used to compare with the value of 'stop_px', to decide whether your conditional order will be triggered by crossing trigger price from upper side or lower side. Mainly used to identify the expected direction of the current conditional order. |
 |stop_px | true | integer | Trigger price |
 |time_in_force |true |string |Time in force, Valid option: GoodTillCancel, ImmediateOrCancel, FillOrKill |
 |order_link_id |false |string |Customized order ID, maximum length at 36 characters, and order ID under the same agency has to be unique.|
@@ -738,6 +738,7 @@
         'exec_timestamp': 1539950401, // The time of funding settlement occurred, UTC timestamp
     },
     'time_now':'1539778407.210858',    UTC timestamp
+    'rate_limit_status':10, // The number of remaining calls for this type of api in the current period(1 min).
 }
  
 ```

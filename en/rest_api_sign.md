@@ -81,4 +81,5 @@ ret_code | return code(0：success, otherwise failure) | 0
 ret_msg | return message | ok
 ext_code | external code error| null
 result | refer to each API|
+rate_limit_status | Number of remaining calls in current period(1 minute)
  
