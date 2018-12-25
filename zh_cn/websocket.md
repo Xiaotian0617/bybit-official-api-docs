@@ -220,23 +220,24 @@ ws.send('{"op":"subscribe","args":["position"]}')
 {
     "topic":"position:BTCUSD",
     "action":"update",
-    "data":
-    {
-        "symbol":"BTCUSD",                  // 产品
-        "side":"Sell",                      // 方向
-        "size":11,                          // 数量
-        "entry_price":6907.291588174717,    // 开仓价
-        "liq_price":7100.234,               // 强平价
-        "bust_price":7088.1234,             // 破产价
-        "take_profit":0,                    // 止盈价格
-        "stop_loss":0,                      // 止损价格
-        "trailing_stop":0,                  // 追踪止损点数
-        "position_value":0.00159252,        // 仓位名义价值
-        "leverage":1,                       // 杠杆
-        "position_status":"Normal",         // 仓位状态(Normal:正常 Liq:强平中 Adl:被减仓中)
-        "auto_add_margin":0,                // 是否自动追加保证金(0:否 1:是)
-        "position_seq":14                   // 仓位版本号
-    }
+    "data":[
+        {
+            "symbol":"BTCUSD",                  // 产品
+            "side":"Sell",                      // 方向
+            "size":11,                          // 数量
+            "entry_price":6907.291588174717,    // 开仓价
+            "liq_price":7100.234,               // 强平价
+            "bust_price":7088.1234,             // 破产价
+            "take_profit":0,                    // 止盈价格
+            "stop_loss":0,                      // 止损价格
+            "trailing_stop":0,                  // 追踪止损点数
+            "position_value":0.00159252,        // 仓位名义价值
+            "leverage":1,                       // 杠杆
+            "position_status":"Normal",         // 仓位状态(Normal:正常 Liq:强平中 Adl:被减仓中)
+            "auto_add_margin":0,                // 是否自动追加保证金(0:否 1:是)
+            "position_seq":14                   // 仓位版本号
+        }
+    ]
 }
 ```
 

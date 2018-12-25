@@ -225,23 +225,24 @@ ws.send('{"op":"subscribe","args":["position"]}')
 {
    "topic":"position:BTCUSD",
    "action":"update",
-   "data":
-   {
-       "symbol":"BTCUSD",                  // the contract for this position
-       "side":"Sell",                      // side
-       "size":11,                          // the current position amount
-       "entry_price":6907.291588174717,    // entry price
-       "liq_price":7100.234,               // liquidation price
-       "bust_price":7088.1234,             // bankruptcy price
-       "take_profit":0,                    // take profit price
-       "stop_loss":0,                      // stop loss price
-       "trailing_stop":0,                  // trailing stop points
-       "position_value":0.00159252,        // positional value
-       "leverage":1,                       // leverage
-       "position_status":"Normal",         // status of position (Normal:normal Liq:in the process of liquidation Adl:in the process of Auto-Deleveraging)
-       "auto_add_margin":0,                // Auto margin replenishment enabled (0:no 1:yes)
-       "position_seq":14                   // position version number
-   }
+   "data":[
+       {
+           "symbol":"BTCUSD",                  // the contract for this position
+           "side":"Sell",                      // side
+           "size":11,                          // the current position amount
+           "entry_price":6907.291588174717,    // entry price
+           "liq_price":7100.234,               // liquidation price
+           "bust_price":7088.1234,             // bankruptcy price
+           "take_profit":0,                    // take profit price
+           "stop_loss":0,                      // stop loss price
+           "trailing_stop":0,                  // trailing stop points
+           "position_value":0.00159252,        // positional value
+           "leverage":1,                       // leverage
+           "position_status":"Normal",         // status of position (Normal:normal Liq:in the process of liquidation Adl:in the process of Auto-Deleveraging)
+           "auto_add_margin":0,                // Auto margin replenishment enabled (0:no 1:yes)
+           "position_seq":14                   // position version number
+       }
+   ]
 }
 ```
 
