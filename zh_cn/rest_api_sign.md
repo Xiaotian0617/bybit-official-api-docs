@@ -66,11 +66,11 @@ content-type: application/json
 Content-Length: 183
 
 {
-	"api_key":"B2Rou0PLPpGqcU0Vu2",
- 	"leverage":100,
- 	"symbol":"BTCUSD",
- 	"timestamp":1541564432,
- 	"sign":"3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c"
+    "api_key":"B2Rou0PLPpGqcU0Vu2",
+    "leverage":100,
+    "symbol":"BTCUSD",
+    "timestamp":1542434791000,
+    "sign":"670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908"
 }
 ```
 

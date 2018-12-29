@@ -36,14 +36,14 @@ sign | signature message |  string | yes | no | The signature message which is g
 1.Concatenate all the public parameters except 'sign' in the format of http GET, by ascending order of parameters' name. To take *'leverage adjustment'* as example, it has two parameters('symbol' and *leverage*), and the result of concatenation is 
  
 ``` js
-var param_str = 'api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1541564432';
+var param_str = 'api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1542434791000';
 ```
 
 2.Sign the parameters string.
 ```js
 var secret = 't7T0YlFnYXk0Fx3JswQsDrViLg1Gh3DUU5Mr';
 var sign = hex(HMAC_SHA256($secret, $param_str));
-// sign = 3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c
+// sign = 670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908
 ```
 
 3.Append the signature at the end of parameters string, and send the http request. Currently, we support the following two types of requesting parameters:
@@ -54,7 +54,7 @@ Host: api-testnet.bybit.com
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 144
  
-api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1541564432&sign=3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c
+api_key=B2Rou0PLPpGqcU0Vu2&leverage=100&symbol=BTCUSD&timestamp=1542434791000&sign=670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908
  
 ```
  
@@ -66,10 +66,10 @@ Content-Length: 183
  
 {
     "api_key":"B2Rou0PLPpGqcU0Vu2",
-    "leverage":100, 
-    "symbol":"BTCUSD", 
-    "timestamp":1541564432, 
-    "sign":"3e5f312ba7bd63caa468a27906b718f3f21b7af5dce4276bf7077f556a3f232c" 
+    "leverage":100,
+    "symbol":"BTCUSD",
+    "timestamp":1542434791000,
+    "sign":"670e3e4aa32b243f2dedf1dafcec2fd17a440e71b05681550416507de591d908"
 }
 ```
  
