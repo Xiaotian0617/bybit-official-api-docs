@@ -98,7 +98,7 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
 ### <span id="orderBook25">OrderBook of 25 depth per side</span>
 ```js
 // Send subscription request
-ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
+ws.send('{"op": "subscribe", "args": ["orderBook25.BTCUSD"]}');
  
 // Response content format
 {

@@ -97,7 +97,7 @@ ws.send('{"op":"subscribe","args":["kline.*.*"]}')
 ### <span id="orderBook25">订阅25档orderBook</span>
 ```js
 // 发送订阅指令
-ws.send('{"op": "subscribe", "args": [orderBook25.BTCUSD]}');
+ws.send('{"op": "subscribe", "args": ["orderBook25.BTCUSD"]}');
 
 // 推送的消息格式
 {
